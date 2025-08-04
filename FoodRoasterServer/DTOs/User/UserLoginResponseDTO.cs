@@ -1,0 +1,17 @@
+﻿
+using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Text.Json.Serialization;
+using FoodRoasterServer.Types.enums;
+namespace FoodRoasterServer.DTOs.User
+{
+    public class UserLoginResponseDTO
+    {
+
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Role { get; set; }
+        public string? Jwt { get; set; }
+    }
+}
