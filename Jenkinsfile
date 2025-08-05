@@ -125,7 +125,7 @@ pipeline {
   post {
     always {
       echo "Cleaning up Docker containers..."
-      bat 'docker rm -f foodroaster-api || exit 0'
+      bat 'docker rm -f api || exit 0'
 
       script {
         // Dynamically find the latest test results folder
