@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using FoodRoasterServer.DTOs.User;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Configuration;
 using FoodRoasterServer.Repositories;
 
 namespace Tests.FoodRoasterServer.UnitTests.Services
@@ -24,7 +25,8 @@ namespace Tests.FoodRoasterServer.UnitTests.Services
         {
             _mockGenericRepository = new Mock<IGenericRepository<User>>();
             _mockMapper = new Mock<IMapper>();
-            _mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>());
+            var mockConfiguration = new Mock<IConfiguration>();
+            _mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>(), mockConfiguration.Object);
 
             _userService = new UserService(   // Mocking the DI here
                 _mockGenericRepository.Object,

@@ -33,8 +33,8 @@ namespace Tests.FoodRoasterServer.UnitTests.Services
             _mockGenericRepository = new Mock<IGenericRepository<User>>();
             _mockMapper = new Mock<IMapper>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-            _mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>());
             _mockConfiguration = new Mock<IConfiguration>();
+            _mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>(), _mockConfiguration.Object);
 
             // Setup user claims -> this is for mocking the depencies
             var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") };

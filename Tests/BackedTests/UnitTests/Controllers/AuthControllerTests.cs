@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Configuration;
 using FoodRoasterServer.Repositories;
 using Moq.EntityFrameworkCore;
 
@@ -31,7 +32,8 @@ namespace Tests.FoodRoasterServer.UnitTests.Controllers
         {
             _mockAuthService = new Mock<IAuthService>();
             _mockUserService = new Mock<IUserService>();
-            _mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>());
+            var mockConfiguration = new Mock<IConfiguration>();
+            _mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>(), mockConfiguration.Object);
             _mockAuditService = new Mock<IAuditService>();
 
             var claims = new List<Claim> { new Claim(ClaimTypes.Email, "test@example.com") };
