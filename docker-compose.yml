@@ -61,7 +61,7 @@ services:
       - backend-network
 
   api:
-    # container_name: foodroaster-api
+    container_name: foodroaster-api
     image: foodroaster-backend:${BUILD_NUMBER}
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
