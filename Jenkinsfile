@@ -110,12 +110,11 @@ pipeline {
   //     }
   //   }
   // }
-stage('Docker Build - NGINX') {
-  steps {
-    bat "docker build -f nginix/Dockerfile -t foodroaster-nginx:latest nginix"
-  }
-}
-
+    stage('Docker Build - NGINX') {
+      steps {
+        bat "docker build -f nginix/Dockerfile -t foodroaster-nginx:latest nginix"
+      }
+    }
 
 
     stage('Deploy') {
