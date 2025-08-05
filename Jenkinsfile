@@ -1,3 +1,60 @@
+// pipeline {
+//   agent any
+
+//   environment {
+//     IMAGE_NAME = "foodroaster-backend"
+//     DOTNET_VERSION = "8.0"
+//   }
+
+//   stages {
+//     stage('Checkout') {
+//       steps {
+//         checkout scm
+//       }
+//     }
+
+//     stage('Restore') {
+//       steps {
+//         dir('FoodRoasterServer') {
+//           bat 'dotnet restore'
+//         }
+//       }
+//     }
+
+//     stage('Build') {
+//       steps {
+//         dir('FoodRoasterServer') {
+//           bat 'dotnet build --configuration Release'
+//         }
+//       }
+//     }
+
+//     stage('Test') {
+//       steps {
+//         dir('Tests/BackedTests/UnitTests') {
+//           bat 'dotnet test  --verbosity normal'
+//         }
+//       }  // <-- close steps block here
+//     } // <-- close stage block here
+
+//     stage('Docker Build') {
+//       steps {
+//         dir('FoodRoasterServer') {
+//           bat "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} ."
+//         }
+//       }
+//     }
+//   }
+
+//   post {
+//     always {
+//       echo "Cleaning up Docker containers..."
+//       bat 'docker rm -f foodroaster-api || exit 0'
+//     }
+//   }
+// }
+
+
 pipeline {
   agent any
 
@@ -32,16 +89,30 @@ pipeline {
     stage('Test') {
       steps {
         dir('Tests/BackedTests/UnitTests') {
-          bat 'dotnet test  --verbosity normal'
+          bat 'dotnet test --verbosity normal'
         }
-      }  // <-- close steps block here
-    } // <-- close stage block here
+      }
+    }
 
     stage('Docker Build') {
       steps {
         dir('FoodRoasterServer') {
-          bat "docker build -t %IMAGE_NAME%:%BUILD_NUMBER% ."
+          bat "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} ."
         }
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        script {
+          // Create a .env file dynamically for Docker Compose to pick up
+          writeFile file: '.env', text: "BUILD_NUMBER=${BUILD_NUMBER}"
+        }
+
+        bat """
+          docker-compose down
+          docker-compose up -d --no-build
+        """
       }
     }
   }

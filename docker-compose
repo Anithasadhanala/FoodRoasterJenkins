@@ -1,3 +1,51 @@
+# version: '3.8'
+
+# services:
+#   nginx:
+#     build:
+#       context: ./nginx
+#       dockerfile: Dockerfile
+#     ports:
+#       - "80:80"     # Expose only Nginx to host
+#     depends_on:
+#       - api
+#     networks:
+#       - backend-network
+
+#   api:
+#     container_name: foodroaster-api
+#     # build:
+#     #   context: ./FoodRoasterServer
+#     #   dockerfile: Dockerfile
+
+#     image: foodroaster-backend:${BUILD_NUMBER}  # <-- Use variable or exact tag from Jenkins
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Production
+#       - ConnectionStrings__DefaultConnection=Server=db;Database=FoodRoaster;User=sa;Password=YourStrongPassword123!;Encrypt=False;TrustServerCertificate=True;
+#     depends_on:
+#       - db
+#     networks:
+#       - backend-network
+
+#   db:
+#     image: mcr.microsoft.com/mssql/server:2022-latest
+#     container_name: db
+#     environment:
+#       SA_PASSWORD: "YourStrongPassword123!"
+#       ACCEPT_EULA: "Y"
+#     volumes:
+#       - sqlvolume:/var/opt/mssql
+#     networks:
+#       - backend-network
+
+# volumes:
+#   sqlvolume:
+
+# networks:
+#   backend-network:
+#     driver: bridge
+
+
 version: '3.8'
 
 services:
@@ -6,7 +54,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - "80:80"     # Expose only Nginx to host
+      - "80:80"
     depends_on:
       - api
     networks:
@@ -14,9 +62,7 @@ services:
 
   api:
     container_name: foodroaster-api
-    build:
-      context: ./FoodRoasterServer
-      dockerfile: Dockerfile
+    image: foodroaster-backend:${BUILD_NUMBER}
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=db;Database=FoodRoaster;User=sa;Password=YourStrongPassword123!;Encrypt=False;TrustServerCertificate=True;
