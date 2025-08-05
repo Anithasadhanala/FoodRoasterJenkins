@@ -5,4 +5,4 @@ FROM nginx:alpine
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy your custom nginx.conf into the container
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.config /etc/nginx/nginx.config
