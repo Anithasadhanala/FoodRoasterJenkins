@@ -86,6 +86,7 @@ pipeline {
       }
     }
 
+
     stage('Test') {
       steps {
         dir('Tests/BackedTests/UnitTests') {
@@ -101,6 +102,14 @@ pipeline {
         }
       }
     }
+
+     stage('Docker Build - NGINX') {
+    steps {
+      dir('nginx') {
+        bat "docker build -t foodroaster-nginx:latest ."
+      }
+    }
+  }
 
     stage('Deploy') {
       steps {
