@@ -178,23 +178,23 @@ pipeline {
         dir('Tests/BackedTests/UnitTests') {
           bat '''
           REM === Generate timestamp ===
-          for /f "tokens=1-4 delims=/ " %%a in ("%date%") do set dt=%%d-%%b-%%c_%%a
-          for /f "tokens=1-2 delims=: " %%a in ("%time%") do set tm=%%a-%%b
+          for /F "tokens=1-3 delims=-" %%a in ("%date%") do set dt=%%c-%%b-%%a
+          for /F "tokens=1-2 delims=:" %%a in ("%time%") do set tm=%%a-%%b
+          set tm=%tm: =0%
           set TIMESTAMP=%dt%_%tm%
-          set TIMESTAMP=%TIMESTAMP: =0%
           set RESULTS_DIR=TestResults\\%TIMESTAMP%
           mkdir %RESULTS_DIR%
 
           REM === Run tests and output trx file ===
           dotnet test --no-build --logger "trx;LogFileName=test_results.trx" --results-directory %RESULTS_DIR%
 
-          REM === Install tools if missing ===
+          REM === Install trx2junit tool if missing ===
           dotnet tool install --global trx2junit --ignore-failed-sources
 
           REM === Add tools to PATH ===
           set PATH=%PATH%;%USERPROFILE%\\.dotnet\\tools
 
-          REM === Convert trx to junit XML ===
+          REM === Convert .trx to JUnit XML ===
           trx2junit %RESULTS_DIR%\\test_results.trx
           '''
         }
@@ -216,25 +216,16 @@ pipeline {
       bat 'docker rm -f api || exit 0'
 
       script {
-        echo "Publishing test results..."
-        try {
-          def resultsFolder = bat(
-            script: '''
-              @echo off
-              for /f "delims=" %%i in ('dir /b /ad /o:-d Tests\\BackedTests\\UnitTests\\TestResults') do (
-                echo %%i
-                goto :EOF
-              )
-            ''',
-            returnStdout: true
-          ).trim()
+        // Find the latest test results folder dynamically
+        def resultsFolder = bat(
+          script: 'for /f "delims=" %i in (\'dir /b /ad /o:-d Tests\\BackedTests\\UnitTests\\TestResults\') do @echo %i & goto :eof',
+          returnStdout: true
+        ).trim()
 
-          junit testResults: "Tests/BackedTests/UnitTests/TestResults/${resultsFolder}/test_results.xml"
+        echo "Publishing test results from: Tests/BackedTests/UnitTests/TestResults/${resultsFolder}/test_results.xml"
 
-          archiveArtifacts artifacts: "Tests/BackedTests/UnitTests/TestResults/${resultsFolder}/Report/**", fingerprint: true
-        } catch (Exception e) {
-          echo "⚠️ Could not find or publish test results: ${e.message}"
-        }
+        // Publish JUnit test results to Jenkins
+        junit testResults: "Tests/BackedTests/UnitTests/TestResults/${resultsFolder}/test_results.xml"
       }
     }
   }
