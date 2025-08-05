@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME = "foodroaster-backend"
+    IMAGE_NAME = "foodroaster-backend2"
     DOTNET_VERSION = "8.0"
   }
 
