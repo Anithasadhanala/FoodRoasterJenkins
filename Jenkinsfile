@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME = "foodroaster-backend2"
+    bat "docker build -t foodroaster-backend:${BUILD_NUMBER} ."
     DOTNET_VERSION = "8.0"
   }
 
