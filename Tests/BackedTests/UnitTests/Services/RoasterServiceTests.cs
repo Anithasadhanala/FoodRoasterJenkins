@@ -21,7 +21,7 @@ namespace Tests.FoodRoasterServer.UnitTests.Services
     [TestClass]
     public class RoasterServiceTests
     {
-        private Mock<IGenericRepository<UserMealRegistration>> _mockGenericRepository;
+        private Mock<IGenericRepository<UserMealRegistration>> _mocGenericRepository;
         private Mock<IMapper> _mockMapper;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<AppDbContext> _mockDbContext;

@@ -34,7 +34,7 @@ pipeline {
         dir('Tests/BackedTests/UnitTests') {
           bat 'dotnet test --no-build --verbosity normal'
         }
-      }
+      
     }
 
     stage('Docker Build') {
