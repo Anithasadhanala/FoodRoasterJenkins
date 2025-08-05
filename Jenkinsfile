@@ -110,8 +110,8 @@ pipeline {
         }
 
         bat """
-          docker-compose down
-          docker-compose up -d --no-build
+          docker-compose -p foodroaster down
+          docker-compose -p foodroaster up -d --no-build
         """
       }
     }
