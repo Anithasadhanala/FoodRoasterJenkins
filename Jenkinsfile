@@ -34,8 +34,8 @@ pipeline {
         dir('Tests/BackedTests/UnitTests') {
           bat 'dotnet test --no-build --verbosity normal'
         }
-      
-    }
+      }  // <-- close steps block here
+    } // <-- close stage block here
 
     stage('Docker Build') {
       steps {
@@ -53,4 +53,3 @@ pipeline {
     }
   }
 }
-
