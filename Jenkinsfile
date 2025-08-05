@@ -32,7 +32,7 @@ pipeline {
     stage('Test') {
       steps {
         dir('Tests/BackedTests/UnitTests') {
-          bat 'dotnet test --no-build --verbosity normal'
+          bat 'dotnet test  --verbosity normal'
         }
       }  // <-- close steps block here
     } // <-- close stage block here
