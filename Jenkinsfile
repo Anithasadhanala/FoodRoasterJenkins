@@ -112,7 +112,7 @@ pipeline {
   // }
 stage('Docker Build - NGINX') {
   steps {
-    bat "docker build -f nginx/Dockerfile -t foodroaster-nginx:latest nginx"
+    bat "docker build -f nginix/Dockerfile -t foodroaster-nginx:latest nginix"
   }
 }
 
