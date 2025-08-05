@@ -103,13 +103,20 @@ pipeline {
       }
     }
 
-     stage('Docker Build - NGINX') {
-    steps {
-      dir('nginx') {
-        bat "docker build -t foodroaster-nginx:latest ."
-      }
-    }
+  //    stage('Docker Build - NGINX') {
+  //   steps {
+  //     dir('nginx') {
+  //       bat "docker build -t foodroaster-nginx:latest ."
+  //     }
+  //   }
+  // }
+stage('Docker Build - NGINX') {
+  steps {
+    bat "docker build -f nginx/Dockerfile -t foodroaster-nginx:latest nginx"
   }
+}
+
+
 
     stage('Deploy') {
       steps {
