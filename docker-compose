@@ -13,6 +13,7 @@ services:
       - backend-network
 
   api:
+    container_name: foodroaster-api
     build:
       context: ./FoodRoasterServer
       dockerfile: Dockerfile
