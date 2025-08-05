@@ -132,10 +132,10 @@ pipeline {
     }
   }
 
-post {
-  always {
-    echo "Cleaning up Docker Compose containers, networks, and volumes..."
-    bat 'docker-compose -p foodroaster down || exit 0'
-  }
-}
+// post {
+//   always {
+//     echo "Cleaning up Docker Compose containers, networks, and volumes..."
+//     bat 'docker-compose -p foodroaster down || exit 0'
+//   }
+// }
 }
